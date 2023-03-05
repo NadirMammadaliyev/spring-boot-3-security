@@ -1,0 +1,20 @@
+version: '3.7'
+
+services:
+  postgres:
+    image: postgres:9.4
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-postgres}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-admin}
+      PGDATA: /data/postgres
+    ports:
+      - "5432:5432"
+    networks:
+      - shared-net
+    restart: unless-stopped
+volumes:
+    postgres:
+
+networks:
+  shared-net:
+    driver: bridge
