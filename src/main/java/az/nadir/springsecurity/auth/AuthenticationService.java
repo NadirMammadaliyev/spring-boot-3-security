@@ -10,6 +10,8 @@ import az.nadir.springsecurity.model.user.User;
 import az.nadir.springsecurity.repository.TokenRepository;
 import az.nadir.springsecurity.repository.UserRepository;
 import java.util.List;
+import java.util.Locale;
+
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -31,7 +33,7 @@ public class AuthenticationService {
         User user = User.builder()
                 .firstname(request.getFirstName())
                 .lastname(request.getLastName())
-                .email(request.getEmail())
+                .email(request.getEmail().toLowerCase(Locale.ROOT))
                 .password(passwordEncoder.encode(request.getPassword()))
                 .role(Role.USER)
                 .build();
