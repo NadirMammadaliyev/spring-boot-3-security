@@ -22,7 +22,7 @@ import org.springframework.web.filter.CorsFilter;
 @Slf4j
 public class ApplicationConfig {
     private final UserRepository userRepository;
-    private final CorsConfiguration cors = new CorsConfiguration();
+
     @Bean
     public UserDetailsService userDetailsService() {
         return username -> userRepository.findByEmail(username).orElseThrow(() -> new UsernameNotFoundException("User not found"));
@@ -46,15 +46,4 @@ public class ApplicationConfig {
         return new BCryptPasswordEncoder();
     }
 
-    @Bean
-    public CorsFilter corsFilter() {
-        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        CorsConfiguration config = cors;
-        if (config.getAllowedOrigins() != null && !config.getAllowedOrigins().isEmpty()) {
-            log.debug("Registering CORS filter");
-            source.registerCorsConfiguration("/api/v1/auth/**", config);
-            source.registerCorsConfiguration("/v2/api-docs", config);
-        }
-        return new CorsFilter(source);
-    }
 }
