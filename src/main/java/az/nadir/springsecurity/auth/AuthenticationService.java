@@ -9,9 +9,6 @@ import az.nadir.springsecurity.model.user.Role;
 import az.nadir.springsecurity.model.user.User;
 import az.nadir.springsecurity.repository.TokenRepository;
 import az.nadir.springsecurity.repository.UserRepository;
-import java.util.List;
-import java.util.Locale;
-
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -19,6 +16,9 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.Locale;
 
 @Service
 @RequiredArgsConstructor
