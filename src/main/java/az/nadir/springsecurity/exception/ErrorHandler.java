@@ -17,6 +17,12 @@ import org.springframework.web.context.request.WebRequest;
 @Slf4j
 public class ErrorHandler extends DefaultErrorAttributes {
 
+    @ExceptionHandler({Exception.class})
+    public ResponseEntity<Map<String, Object>> handle(Exception exception, WebRequest request) {
+        String message = String.format("Unexpected Exception exception: %s, file: %s, line: %s",exception.getMessage(), exception.getStackTrace()[0].getFileName(), exception.getStackTrace()[0].getLineNumber());
+        return this.ofType(request, HttpStatus.UNAUTHORIZED, message);
+    }
+
     @ExceptionHandler({UsernameNotFoundException.class})
     public ResponseEntity<Map<String, Object>> handle(UsernameNotFoundException exception, WebRequest request) {
         String message = String.format("Unexpected Exception exception: %s, file: %s, line: %s",exception.getMessage(), exception.getStackTrace()[0].getFileName(), exception.getStackTrace()[0].getLineNumber());

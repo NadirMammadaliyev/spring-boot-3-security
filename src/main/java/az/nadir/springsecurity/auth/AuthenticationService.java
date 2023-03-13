@@ -11,6 +11,7 @@ import az.nadir.springsecurity.repository.TokenRepository;
 import az.nadir.springsecurity.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -21,6 +22,7 @@ import java.util.List;
 import java.util.Locale;
 
 @Service
+@Slf4j
 @RequiredArgsConstructor
 public class AuthenticationService {
     private final UserRepository userRepository;
@@ -37,6 +39,7 @@ public class AuthenticationService {
                 .password(passwordEncoder.encode(request.getPassword()))
                 .role(Role.USER)
                 .build();
+        log.info("register user: {}", user);
         User savedUser = userRepository.save(user);
         String jwtToken = jwtService.generateToken(user);
         saveUserToken(savedUser, jwtToken);
@@ -51,6 +54,7 @@ public class AuthenticationService {
 
         User user = userRepository.findByEmail(request.getEmail())
                 .orElseThrow(() -> new UsernameNotFoundException("User not found!"));
+        log.info("authenticate user: {}", user);
         authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
                 request.getEmail(),
                 request.getPassword())
@@ -66,6 +70,7 @@ public class AuthenticationService {
 
     private void revokedAllUserTokens(User user) {
         List<Token> validUserTokens = tokenRepository.findAllValidTokensByUser(user.getId());
+        log.info("revokedAllUserTokens validUserTokens: {}", validUserTokens);
         if (validUserTokens.isEmpty())
             return;
         validUserTokens.forEach(t -> {
@@ -83,6 +88,7 @@ public class AuthenticationService {
                 .expired(false)
                 .revoked(false)
                 .build();
+        log.info("saveUserToken token: {}", tokenModel);
         tokenRepository.save(tokenModel);
     }
 }
