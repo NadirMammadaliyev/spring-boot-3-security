@@ -70,7 +70,6 @@ public class AuthenticationService {
 
     private void revokedAllUserTokens(User user) {
         List<Token> validUserTokens = tokenRepository.findAllValidTokensByUser(user.getId());
-        log.info("revokedAllUserTokens validUserTokens: {}", validUserTokens);
         if (validUserTokens.isEmpty())
             return;
         validUserTokens.forEach(t -> {
@@ -88,7 +87,6 @@ public class AuthenticationService {
                 .expired(false)
                 .revoked(false)
                 .build();
-        log.info("saveUserToken token: {}", tokenModel);
         tokenRepository.save(tokenModel);
     }
 }

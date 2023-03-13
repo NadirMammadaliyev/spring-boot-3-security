@@ -43,7 +43,7 @@ public class SecurityConfiguration {
                         // -- Swagger UI v3 (OpenAPI)
                         "/v3/api-docs/**",
                         "/swagger-ui/**," ,
-                        "api/v1/feign-controller/**")
+                        "/api/v1/feign-controller/**")
                 .permitAll()
                 .anyRequest()
                 .authenticated()
